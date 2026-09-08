@@ -226,7 +226,7 @@ namespace Certify.Domain
             has_enroll_rights = false;
 
             var result = false;
-            var owner_sid = SecurityDescriptor.GetOwner(typeof(SecurityIdentifier)).Value;
+            var owner_sid = SecurityDescriptor.GetOwner(typeof(SecurityIdentifier))?.Value;
 
             if ((user_sids == null && SidUtil.IsLowPrivSid(owner_sid)) ||   // Is a low-privileged user owner of the template?
                 (user_sids != null && user_sids.Contains(owner_sid)))       // Is a principal from our SID collection owner of the template?

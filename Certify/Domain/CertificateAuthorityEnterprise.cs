@@ -126,7 +126,7 @@ namespace Certify.Domain
 
             if (security_descriptor != null)
             {
-                var owner_sid = security_descriptor.GetOwner(typeof(SecurityIdentifier)).Value;
+                var owner_sid = security_descriptor.GetOwner(typeof(SecurityIdentifier))?.Value;
 
                 if ((user_sids == null && SidUtil.IsLowPrivSid(owner_sid)) ||   // Is a low-privileged user owner of the certificate authority?
                     (user_sids != null && user_sids.Contains(owner_sid)))       // Is a principal from our SID collection owner of the certificate authority?

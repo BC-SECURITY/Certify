@@ -13,6 +13,9 @@ namespace Certify.Lib
 
         public static bool IsLowPrivSid(string sid)
         {
+            if (string.IsNullOrEmpty(sid))
+                return false;
+
             return Regex.IsMatch(sid, @"^S-1-5-21-.+-(513|515|545)$") // Domain Users, Domain Computers, Users
                 || sid == "S-1-1-0"   // Everyone
                 || sid == "S-1-5-11"; // Authenticated Users

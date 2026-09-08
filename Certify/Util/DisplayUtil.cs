@@ -84,7 +84,7 @@ namespace Certify.Lib
             if (security_descriptor != null)
             { 
                 var owner_sid = security_descriptor.GetOwner(typeof(SecurityIdentifier));
-                var owner_str = GetUserSidString(owner_sid.ToString());
+                var owner_str = owner_sid == null ? "<unknown>" : GetUserSidString(owner_sid.ToString());
             
                 Console.WriteLine($"      Owner: {owner_str}");
                 Console.WriteLine();
@@ -258,7 +258,7 @@ namespace Certify.Lib
         private static void PrintAllPermissions(ActiveDirectorySecurity sd)
         {
             var owner_sid = sd.GetOwner(typeof(SecurityIdentifier));
-            var owner_str = GetUserSidString(owner_sid.ToString());
+            var owner_str = owner_sid == null ? "<unknown>" : GetUserSidString(owner_sid.ToString());
 
             Console.WriteLine();
             Console.WriteLine($"      Owner: {owner_str}");
@@ -334,9 +334,10 @@ namespace Certify.Lib
             Console.WriteLine("      Object Control Permissions");
 
             var owner_sid = sd.GetOwner(typeof(SecurityIdentifier));
+            var owner_str = owner_sid?.ToString();
 
-            if (!hide_admins || !SidUtil.IsAdminSid(owner_sid.ToString()))
-                Console.WriteLine($"        Owner                       : {GetUserSidString(owner_sid.ToString())}");
+            if (owner_str == null || !hide_admins || !SidUtil.IsAdminSid(owner_str))
+                Console.WriteLine($"        Owner                       : {(owner_str == null ? "<unknown>" : GetUserSidString(owner_str))}");
 
             if (full_control_principals.Any())
                 Console.WriteLine($"        Full Control                : {string.Join(join_sep, full_control_principals.OrderBy(p => p).ToList())}");
